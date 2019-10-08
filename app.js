@@ -15,3 +15,9 @@ let port = 3000;
 app.listen(port, () => {
     console.log('Server started on port http://localhost:' + port + '/');
 });
+
+//routers
+let indexRouter = require('./routes/indexRoute');
+
+//routes
+app.use('/', indexRouter);
