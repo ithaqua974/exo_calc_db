@@ -1,0 +1,25 @@
+{
+  "name": "exo_calc_db",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ithaqua974/exo_calc_db.git"
+  },
+  "author": "tristan",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ithaqua974/exo_calc_db/issues"
+  },
+  "homepage": "https://github.com/ithaqua974/exo_calc_db#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "ejs": "^2.7.1",
+    "express": "^4.17.1",
+    "mongodb": "^3.3.2"
+  }
+}
