@@ -11,21 +11,93 @@
 </head>
 
 <body>
-    <form action="calculate" method="post" class="form">
-        <input type="number" name="n1" id="n1">
-        <input type="number" name="n2" id="n2">
-        <label for="plus"></label>
-        <input type="radio" name="signe" id="plus" value="+">
-        <label for="moins"></label>
-        <input type="radio" name="signe" id="moins" value="-">
-        <label for="fois"></label>
-        <input type="radio" name="signe" id="fois" value="*">
-        <label for="divise"></label>
-        <input type="radio" name="signe" id="divise" value="/">
-        <input type="submit" value="=">
-    </form>
+    <div class="container text-center">
+        <div class="card-deck">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title"> calculatrice</div>
+                </div>
+                <div class="card-body">
+                    <!-- formulaire html -->
+                    <form action="/calculate" method="POST" class="form">
+
+                        <div class="form-group row">
+                            <div class="col-sm-5">
+                                <input type="number" name="chiffre1" id="chiffre1" class="form-control m-2">
+                                <input type="number" name="chiffre2" id="chiffre2" class="form-control m-2">
+                            </div>
+                            <div class="col-sm-">
+                                <div class="form-check m-2">
+                                    <input type="radio" name="signe" id="plus" value="+" class="form-check-input">
+                                    <label for="plus" class="form-check-label">+</label>
+                                </div>
+                                <div class="form-check m-2">
+                                    <input type="radio" name="signe" id="moins" value="-" class="form-check-input">
+                                    <label for="moins" class="form-check-label">-</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-1">
+                                <div class="form-check m-2">
+                                    <input type="radio" name="signe" id="mutiplier" value="*" class="form-check-input">
+                                    <label for="multiplier" class="form-check-label">x</label>
+                                </div>
+                                <div class="form-check m-2">
+                                    <input type="radio" name="signe" id="diviser" value="/" class="form-check-input">
+                                    <label for="diviser" class="form-check-label">:</label>
+                                </div>
+                                <input type="submit" value="=" class="btn btn-primary">
+                            </div>
+                        </div>
 
 
+                    </form>
+                </div>
+                <div class="card-footer">
+                    <!-- afficher le resultat du la fonction calculé dans app.js -->
+                    <%= calcul %>=
+                    <% if (locals.resultat){ %>
+                    <%= resultat %>
+                    <% } %>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Historique</div>
+                </div>
+                <div class="card-body">
+                    <table>
+                        <thead>
+                            <tr>
+                                <td>chiffre 1</td>
+                                <td>signe</td>
+                                <td>chiffre 2</td>
+                                <td>=</td>
+                                <td>résultat</td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (calcul) {%>
+                            <% for(let i = 0; i < calcul.length; i++) { %>
+                            <tr>
+                                <td><%= calcul[i].chiffre1 %></td>
+                                <td><%= calcul[i].signe %></td>
+                                <td><%= calcul[i].chiffre2 %></td>
+                                <td>=</td>
+                                <td><%= calcul[i].résultat%></td>
+                            </tr>
+                            <% } %>
+                            <% } %>
+
+                        </tbody>
+
+                    </table>
+                </div>
+                <div class="card-footer"></div>
+            </div>
+        </div>
+
+
+    </div>
 </body>
 
 </html>

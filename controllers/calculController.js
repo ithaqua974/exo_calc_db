@@ -9,7 +9,7 @@ let calculSchema = new Schema({
 
 });
 
-const calcul = mongoose.model('calcul', calculSchema);
+const Calcul = mongoose.model('Calcul', calculSchema);
 
 let dbUrl = 'mongodb://localhost:27017/calcul';
 const db = mongoose.connection;
@@ -19,6 +19,21 @@ const controller = {};
 
 //route pour afficher la vue index en passant la variable résultat de l'appli à la vue
 controller.list = (req, res) => {
+    mongoose.connect(dbUrl, {
+        useNewUrlParser: true,
+        useUnifiedTopology: true
+    });
+    db.on('error', console.error.bind(console, 'connection error:'));
+    db.once('open', function () {
+        console.log("Controller LIST");
+
+        Calcul.find(function (err, calculs) {
+            if (err) throw err;
+            res.render("index", {
+                calcul: calculs
+            });
+        });
+    });
     var resultat = '0';
     var calcul = 'calcul';
     res.render('index', {
@@ -61,3 +76,5 @@ controller.save = (req, res) => {
         resultat: resultat,
     });
 };
+
+module.exports = controller;
