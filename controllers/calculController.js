@@ -5,7 +5,10 @@ let calculSchema = new Schema({
     chiffre2: Number,
     signe: String,
     résultat: Number,
-    actif: Boolean,
+    actif: {
+        type: Boolean,
+        default: 1
+    },
 
 });
 
@@ -29,27 +32,73 @@ controller.list = (req, res) => {
 
         Calcul.find(function (err, calculs) {
             if (err) throw err;
+            console.log(calculs);
             res.render("index", {
                 calcul: calculs
+
             });
         });
     });
-    var resultat = '0';
-    var calcul = 'calcul';
-    res.render('index', {
-        resultat: resultat,
-        calcul: calcul,
-    });
+    // var resultat = '0';
+    // var calc = 'calcul';
+    // res.render('index', {
+    //     resultat: resultat,
+    //     calcul: calcul,
+    // });
 };
 //fonction pour la calculatrice
 controller.save = (req, res) => {
-    var chiffre1 = Number(req.body.chiffre1);
-    var chiffre2 = Number(req.body.chiffre2);
+    //
+    try {
+        mongoose.connect(dbUrl, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true
+        });
+
+        db.on('error', console.error.bind(console, 'connection error:'));
+        db.once('open', function () {
+
+            let calculAjout = new Calcul({
+                //chiffre1: 10,
+                chiffre1: req.body.chiffre1,
+                signe: '+',
+                signe: req.body.signe,
+                //chiffre2: 5,
+                chiffre2: req.body.chiffre2,
+                résultat: req.body.resultat,
+                actif: 1,
+            })
+
+            calculAjout.save((err) => {
+                if (err) throw err;
+                console.log('Calcul Ajouté');
+            })
+
+        });
+    } catch (err) {
+        if (err) {
+            console.log(err)
+        }
+    }
+    res.redirect('/');
+
+    // tesg pour voir si la variable résultat retourne bien le résultat du calcul
+    console.log(resultat)
+    // rendu de la vue avec la variable résultat
+    res.render('index', {
+        calcul: calcul,
+        resultat: resultat,
+    });
+};
+
+function calculate() {
+    var chiffre1 = calcul.chiffre1;
+    var chiffre2 = calcul.chiffre2;
     var resultat;
-    var calcul = req.body.chiffre1 + req.body.signe + req.body.chiffre2;
+    var operation = calcul.chiffre1 + calculy.signe + calcul.chiffre2;
 
     // switch qui permet de definir les actions en fonction que quel button radio est coché dans la vie
-    switch (req.body.signe) {
+    switch (calcul.signe) {
         case "+":
 
             resultat = chiffre1 + chiffre2;
@@ -67,14 +116,6 @@ controller.save = (req, res) => {
             resultat = "veuillez sélectionner un opérateur";
             break;
     }
-
-    // tesg pour voir si la variable résultat retourne bien le résultat du calcul
-    console.log(resultat)
-    // rendu de la vue avec la variable résultat
-    res.render('index', {
-        calcul: calcul,
-        resultat: resultat,
-    });
 };
 
 module.exports = controller;

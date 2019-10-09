@@ -65,7 +65,7 @@
                     <div class="card-title">Historique</div>
                 </div>
                 <div class="card-body">
-                    <table>
+                    <table class="table table-striped table-pimary">
                         <thead>
                             <tr>
                                 <td>chiffre 1</td>
@@ -73,6 +73,9 @@
                                 <td>chiffre 2</td>
                                 <td>=</td>
                                 <td>résultat</td>
+                                <td>actif</td>
+                                <td>valiider</td>
+                                <td>modifier</td>
                             </tr>
                         </thead>
                         <tbody>
@@ -84,6 +87,8 @@
                                 <td><%= calcul[i].chiffre2 %></td>
                                 <td>=</td>
                                 <td><%= calcul[i].résultat%></td>
+                                <td><input type="checkbox" name="actif" id="actif" checked></td>
+                                <td><input type="submit" value="valider" class="btn btn-light"></td>
                             </tr>
                             <% } %>
                             <% } %>
