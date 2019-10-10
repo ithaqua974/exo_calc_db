@@ -1,18 +1,7 @@
 let mongoose = require('mongoose');
-let Schema = mongoose.Schema;
-let calculSchema = new Schema({
-    chiffre1: Number,
-    chiffre2: Number,
-    signe: String,
-    résultat: Number,
-    actif: {
-        type: Boolean,
-        default: 1
-    },
+let Calcul = require('../models/calculModel.js');
 
-});
-
-const Calcul = mongoose.model('Calcul', calculSchema);
+// const Calcul = mongoose.model('Calcul', calculSchema);
 
 let dbUrl = 'mongodb://localhost:27017/calcul';
 const db = mongoose.connection;
@@ -28,8 +17,8 @@ controller.list = (req, res) => {
     });
     db.on('error', console.error.bind(console, 'connection error:'));
     db.once('open', function () {
-        console.log("Controller LIST");
-
+        // console.log("Controller LIST");
+        console.log(Calcul);
         Calcul.find(function (err, calculs) {
             if (err) throw err;
             console.log(calculs);
@@ -39,12 +28,7 @@ controller.list = (req, res) => {
             });
         });
     });
-    // var resultat = '0';
-    // var calc = 'calcul';
-    // res.render('index', {
-    //     resultat: resultat,
-    //     calcul: calcul,
-    // });
+
 };
 //fonction pour la calculatrice
 controller.save = (req, res) => {
@@ -69,7 +53,7 @@ controller.save = (req, res) => {
                 actif: 1,
             })
 
-            calculAjout.save((err) => {
+            Calcul.save((err, calculAjout) => {
                 if (err) throw err;
                 console.log('Calcul Ajouté');
             })
@@ -83,12 +67,12 @@ controller.save = (req, res) => {
     res.redirect('/');
 
     // tesg pour voir si la variable résultat retourne bien le résultat du calcul
-    console.log(resultat)
+    // console.log(resultat)
     // rendu de la vue avec la variable résultat
-    res.render('index', {
-        calcul: calcul,
-        resultat: resultat,
-    });
+    // res.render('index', {
+    //     calcul: calcul,
+    //     resultat: resultat,
+    // });
 };
 
 function calculate() {
