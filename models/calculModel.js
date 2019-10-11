@@ -1,8 +1,13 @@
 let mongoose = require('mongoose');
 let Schema = mongoose.Schema;
+let dbUrl = 'mongodb://localhost:27017/calcul';
 
-
-let calculSchema = new Schema({
+mongoose.connect(dbUrl, {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+    useFindAndModify: false
+});
+let calculSchema = mongoose.Schema({
     chiffre1: Number,
     chiffre2: Number,
     signe: String,
@@ -17,5 +22,5 @@ let calculSchema = new Schema({
 
 });
 
-module.exports = mongoose.model('Calcul', calculSchema);
-// module.exports = Calcul;
+let Calcul = mongoose.model('Calcul', calculSchema);
+module.exports = Calcul;
