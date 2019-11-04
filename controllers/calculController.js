@@ -122,8 +122,27 @@ controller.edit = (req, res) => {
     })
 };
 controller.update = (req, res) => {
-    console.log(req.param);
-    // Calcul.findById(req.param.id, )
+    console.log(req.params);
+    Calcul.findById(req.params.id, function (err, calcul) {
+        if (err) throw err;
+        if (calcul) {
+            chiffre1 = req.params.chiffre1;
+            chiffre2 = req.params.chiffre2;
+            signe = req.params.signe;
+            Calcul.findByIdAndUpdate(req.params.id, {
+                résultat: "",
+                chiffre1: chiffre1,
+                chiffre2: chiffre2,
+                signe: signe,
+
+            })
+
+            function (err) {
+                if (err) throw err;
+                res.redirect('/');
+            }
+        }
+    })
 
 };
 
