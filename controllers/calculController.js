@@ -8,12 +8,13 @@ const db = mongoose.connection;
 
 const controller = {};
 
-
+controller.tech = (req, res) => {
+    res.render("technos")
+}
 //route pour afficher la vue index en passant la variable résultat de l'appli à la vue
 controller.list = (req, res) => {
     Calcul.find(function (err, calculs) {
         if (err) throw err;
-        // console.log(calculs);
         res.render("index", {
             calcul: calculs
 
@@ -24,7 +25,6 @@ controller.list = (req, res) => {
 };
 //fonction pour la calculatrice
 controller.save = (req, res) => {
-    // console.log(req.body);
     try {
         mongoose.connect(dbUrl, {
             useNewUrlParser: true,
@@ -43,7 +43,6 @@ controller.save = (req, res) => {
 
             calculAjout.save((err) => {
                 if (err) throw err;
-                // console.log('Calcul Ajouté');
                 res.redirect('/');
             })
 
@@ -55,8 +54,8 @@ controller.save = (req, res) => {
     }
 
 
-    // tesg pour voir si la variable résultat retourne bien le résultat du calcul
-    // console.log(resultat)
+
+
     // rendu de la vue avec la variable résultat
 
 };
@@ -103,20 +102,16 @@ function calculate(chiffre1, chiffre2, signe) {
             resultat = "veuillez sélectionner un opérateur";
             break;
     };
-    console.log(resultat);
     return resultat;
 };
 controller.edit = (req, res) => {
 
-    // console.log(req.params.id);
     Calcul.findById(req.params.id, function (err, calcul) {
-        console.log("calcul");
+        console.log(calcul);
         if (err) throw err;
         if (calcul) {
             Calcul.find(function (err, calculs) {
                 if (err) throw err;
-                // console.log(calculs);
-                // console.log(calcul);
                 res.render("index", {
                     calcul: calculs,
                     dbCalcul: calcul
@@ -125,6 +120,11 @@ controller.edit = (req, res) => {
             });
         }
     })
+};
+controller.update = (req, res) => {
+    console.log(req.param);
+    // Calcul.findById(req.param.id, )
+
 };
 
 module.exports = controller;

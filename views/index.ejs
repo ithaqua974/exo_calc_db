@@ -5,12 +5,34 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="../style.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+
     <title>db calculator</title>
 </head>
 
 <body>
+
+    <div id="header">
+        <ul class="nav nav-tabs bg-secondary">
+            <li class="nav-item">
+                <a class="nav-link active" href="/index">Calculator</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link text-light" href="/technos">Technos</a>
+            </li>
+
+
+        </ul>
+        <header class="jumbotron">
+            <H1 class="display-4">calculator</H1>
+            <div class="lead"> c'est une calculatrice qui sauvegarde les calculs et le résultat dans la base de donnée
+            </div>
+            <hr class="my-4">
+        </header>
+
+    </div>
     <div class="container-fluid text-center">
         <div class="row">
             <div class="col-md-4">
@@ -20,7 +42,7 @@
                     </div>
                     <div class="card-body">
                         <!-- formulaire html -->
-                        <form action="/add" method="POST" class="form">
+                        <form <%if(locals.dbCalcul){%> action="/update" <%} else{%> action="/add" <%}%> method="POST" class="form">
 
                             <div class="form-group row">
                                 <div class="col-sm-6">
@@ -34,26 +56,23 @@
                                 <div class="col-sm-3">
                                     <div class="form-check m-2">
                                         <input type="radio" name="signe" id="plus" value="+" class="form-check-input"
-                                        <%if (locals.dbcalcul&&locals.dbCalcul.signe==="+"){%>checked="checked" <%}%>
-                                        >
-                                        <label for="plus" class="form-check-label">+</label>
-                                    </div>
-                                    <div class="form-check m-2">
-                                        <input type="radio" name="signe" id="moins" value="-" class="form-check-input"
-                                        <%if (locals.dbcalcul&&locals.dbCalcul.signe==="-"){%>checked="checked" <%}%>
+                                        <%if (locals.dbcalcul){%><%if(locals.dbCalcul.signe=="+"){%>checked <%}%><%}%>>
+                            <label for="plus" class="form-check-label">+</label>
+                    </div>
+                    <div class="form-check m-2">
+                        <input type="radio" name="signe" id="moins" value="-" class="form-check-input" <%if (locals.dbcalcul&&locals.dbCalcul.signe==="-"){%>checked<%}%>
                                         >
                                         <label for="moins" class="form-check-label">-</label> </div> </div> <div class="col-sm-1">
                                     <div class="form-check m-2">
-                                        <input type="radio" name="signe" id="mutiplier" value="*"
-                                            class="form-check-input"
-                                            <%if (locals.dbcalcul&&locals.dbCalcul.signe==="*"){%>checked="checked" <%}%>
+                                        <input type="radio" name="signe" id="mutiplier" value="*" class="form-check-input"
+                                            <%if (locals.dbcalcul&&locals.dbCalcul.signe==="*"){%>checked<%}%>
                                             >
                                         <label for="multiplier" class="form-check-label">x</label>
                                     </div>
                                     <div class="form-check m-2">
                                         <input type="radio" name="signe" id="diviser" value="/"
                                             class="form-check-input"
-                                            <%if (locals.dbcalcul&&locals.dbCalcul.signe==="/"){%>checked="checked" <%}%>>
+                                            <%if (locals.dbcalcul&&locals.dbCalcul.signe==="/"){%>checked<%}%>>
                                         <label for="diviser" class="form-check-label">:</label>
                                     </div>
                                     
@@ -61,63 +80,83 @@
                             </div>                        
                     </div>
                     <div class="card-footer">
-<input type="submit" value="ajouter" class="btn btn-primary">
+                        <input type="submit" value="ajouter" class="btn btn-primary">
                     </div>
                 </form>
-                            </div>
-                    </div>
-                    <div class=" col-md-8">
-                        <div class="card">
-                            <div class="card-header">
-                                <div class="card-title">Historique</div>
-                            </div>
-                            <div class="card-body">
-                                <table class="table table-striped table-pimary">
-                                    <thead>
-                                        <tr>
-                                            <td>chiffre 1</td>
-                                            <td>signe</td>
-                                            <td>chiffre 2</td>
-                                            <td>=</td>
-                                            <td>résultat</td>
-                                            <td>actif</td>
-                                            <td>valider</td>
-                                            <td>modifier</td>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        <% if (calcul) { %> <% for(let i = 0; i < calcul.length; i++) { %> <tr>
-                                    <td><%= calcul[i].chiffre1 %></td>
-                                    <td><%= calcul[i].signe %></td>
-                                    <td><%= calcul[i].chiffre2 %></td>
-                                    <td>=</td>
-                                    <td><%= calcul[i].résultat%></td>
-                                    <td><input type="checkbox" name="actif" id="actif" checked></td>
-                                    <td>
-                                        <!-- <input type="submit" value="Calculer" class="btn btn-light"> -->
-                                        <a href="/calcul/<%=calcul[i]._id%>" class="btn btn-light">calculer</a>
-                                    </td>
-                                    <td><a href="/edit/<%=calcul[i]._id%>" class="btn btn-warning">modifier</a>
-                                    </td>
-                                    </tr>
-                                    <% } %>
-                                    <% } %>
-
-                                    </tbody>
-
-                                    </table>
-                                </div>
-                                <div class="card-footer">
-                                    <!-- <input type="hidden" name="id" value="<%= calcul%>"> -->
-                                </div>
-                            </div>
-                    </div>
-
-
-                </div>
-
-
             </div>
+        </div>
+        <div class=" col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <div class="card-title">Historique</div>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive-lg">
+                    <table class="table table-striped table-pimary">
+                        <thead>
+                            <tr>
+                                <!-- <td class="p-1">NB 1</td>
+                                <td class="p-1">+ - x :</td>
+                                <td class="p-1">NB 2</td>
+                                <td class="p-1">=</td> -->
+                                <td class="p-1">Calcul</td>
+                                <td class="p-1">résult</td>
+                                <td class="p-1"></td>
+                                <td class="p-1"></td>
+                                <td class="p-1"></td>
+                                <!-- <td>actif</td>
+                                <td>valider</td>
+                                <td>modifier</td> -->
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <% if (calcul) { %> <% for(let i = 0; i < calcul.length; i++) { %> <tr>
+                        <td class="p-1"><%= calcul[i].chiffre1 %>
+                            <%= calcul[i].signe %>
+                            <%= calcul[i].chiffre2 %>
+                            =
+                        </td>
+                        <td class="p-1"><%= calcul[i].résultat%></td>
+                        <td class="p-1"></td>
+                        <td class="p-1"></td>
+                        <td class="p-1"></td>
+                        </tr>
+                        <tr>
+                            <td class="p-1">
+                                <label for="actif">
+                                    actif
+                                </label>
+                                <input type="checkbox" name="actif" id="actif" checked>
+                            </td>
+
+
+                            <td class="p-1">
+                                <!-- <input type="submit" value="Calculer" class="btn btn-light"> -->
+                                <a href="/calcul/<%=calcul[i]._id%>" class="btn btn-light">calculer</a>
+                            </td>
+                            <td class="p-1">
+                                <a href="/edit/<%=calcul[i]._id%>" class="btn btn-warning">modifier</a>
+                            </td>
+                            <td class="p-1"></td>
+                            <td class="p-1"></td>
+                        </tr>
+                        <% } %>
+                        <% } %>
+
+                        </tbody>
+
+                        </table>
+                    </div>
+                    <div class="card-footer">
+                        <!-- <input type="hidden" name="id" value="<%= calcul%>"> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    </div>
 </body>
 
 </html>
